@@ -1,11 +1,8 @@
 <?php
-require "./src/controllers/products.php";
-$controller = new Products();
 $action = $_GET['action'] ?? null;
-if ($action === 'index') {
-    $controller->index();
-} elseif ($action == 'show') {
-    $controller->show();
-} else {
-    echo  '404 not found';
-}
+$controller = $_GET['controller'] ?? null;
+require "./src/controllers/$controller.php";
+// php is not case senstive when create new objects of a class
+// new Home will work the same as new Home()
+$cont = new $controller();
+$cont->$action();
