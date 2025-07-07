@@ -1,8 +1,9 @@
 <?php
-$action = $_GET['action'] ?? null;
-$controller = $_GET['controller'] ?? null;
+$path = $_SERVER['REQUEST_URI'];
+$path = parse_url($path, PHP_URL_PATH);
+$segments = explode('/', $path);
+$action = $segments[2] ?? null;
+$controller = $segments[1] ?? null;
 require "./src/controllers/$controller.php";
-// php is not case senstive when create new objects of a class
-// new Home will work the same as new Home()
 $cont = new $controller();
 $cont->$action();
