@@ -1,8 +1,7 @@
 <?php
 spl_autoload_register(function (string $className) {
     $className = str_replace('\\', '/', $className);
-    // exit($className);
-    // exit("src/$className.php");
+
     require "src/$className.php";
 });
 $path = $_SERVER['REQUEST_URI'];
@@ -18,6 +17,5 @@ if (!$params) {
 }
 $action = $params['action'];
 $controller = 'App\Controllers\\' . ucwords($params['controller']);
-// require "./src/controllers/$controller.php";
 $cont = new $controller();
 $cont->$action();
