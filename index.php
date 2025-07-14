@@ -8,9 +8,10 @@ $path = $_SERVER['REQUEST_URI'];
 $path = parse_url($path, PHP_URL_PATH);
 // require "src/router.php";
 $router = new Framework\Router();
-$router->add('/home/index', ['controller' => 'Home', 'action' => 'index']);
-$router->add('/', ['controller' => 'Home', 'action' => 'index']);
-$router->add('/products', ['controller' => 'Products', 'action' => 'index']);
+$router->add("/{controller}/{action}");
+// $router->add('/home/index', ['controller' => 'Home', 'action' => 'index']);
+// $router->add('/', ['controller' => 'Home', 'action' => 'index']);
+// $router->add('/products', ['controller' => 'Products', 'action' => 'index']);
 $params =  $router->match($path);
 if (!$params) {
     exit('404 not found');
