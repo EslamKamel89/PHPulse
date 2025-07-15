@@ -13,15 +13,13 @@ class Router {
     public function match(string $path): array | bool {
         $path = trim($path, '/');
         foreach ($this->routes as $route) {
-            // $pattern = "#^/(?<controller>[a-z]+)/(?<action>[a-z]+)$#";
-            // print_r(compact('route', "pattern"));
-            // print_r([$route['path'], $pattern]);
             $pattern =  $this->getPatternFromRoutePath($route['path']);
             if (preg_match($pattern, $path, $matches)) {
                 $matches =    array_filter($matches, function ($key,) {
                     return preg_match('#[a-z]+#', $key);
                 }, ARRAY_FILTER_USE_KEY);
-                return $matches;
+                $params = array_merge($matches, $route['params']);
+                return $params;
             }
         }
         return false;
@@ -30,12 +28,12 @@ class Router {
         $routePath = trim($routePath, '/');
         $segements = explode('/', $routePath);
         $segements = array_map(function ($segement,) {
-            preg_match("#^\{([a-z][a-z0-9]*)\}$#", $segement, $matches);
-            $segement = "(?<" . $matches[1] . ">[a-z]+)";
+            if (preg_match("#^\{([a-z][a-z0-9]*)\}$#", $segement, $matches)) {
+                $segement = "(?<" . $matches[1] . ">[a-z]+)";
+            }
             return $segement;
         }, $segements);
         $segements = "#^" . implode('/', $segements,) . "$#";
-        // print_r(compact('segements'));
         return $segements;
     }
 }
