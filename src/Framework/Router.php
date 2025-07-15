@@ -14,6 +14,7 @@ class Router {
         $path = trim($path, '/');
         foreach ($this->routes as $route) {
             $pattern =  $this->getPatternFromRoutePath($route['path']);
+            print_r(compact('pattern'));
             if (preg_match($pattern, $path, $matches)) {
                 $matches =    array_filter($matches, function ($key,) {
                     return preg_match('#[a-z]+#', $key);
@@ -29,7 +30,7 @@ class Router {
         $segements = explode('/', $routePath);
         $segements = array_map(function ($segement,) {
             if (preg_match("#^\{([a-z][a-z0-9]*)\}$#", $segement, $matches)) {
-                $segement = "(?<" . $matches[1] . ">[a-z]+)";
+                $segement = "(?<" . $matches[1] . ">[^/]*)";
             }
             return $segement;
         }, $segements);
