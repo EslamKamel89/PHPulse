@@ -30,7 +30,10 @@ class Router {
         $segements = explode('/', $routePath);
         $segements = array_map(function ($segement,) {
             if (preg_match("#^\{([a-z][a-z0-9]*)\}$#", $segement, $matches)) {
-                $segement = "(?<" . $matches[1] . ">[^/]*)";
+                return  "(?<" . $matches[1] . ">[^/]*)";
+            }
+            if (preg_match("#^\{([a-z][a-z0-9]*):(.+)\}$#", $segement, $matches)) {
+                return  "(?<" . $matches[1] . ">" . $matches[2] . ")";
             }
             return $segement;
         }, $segements);
