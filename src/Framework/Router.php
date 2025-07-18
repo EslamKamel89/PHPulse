@@ -11,6 +11,8 @@ class Router {
         ];
     }
     public function match(string $path): array | bool {
+        $path = urldecode($path);
+        // print_r(compact('path'));
         $path = trim($path, '/');
         foreach ($this->routes as $route) {
             $pattern =  $this->getPatternFromRoutePath($route['path']);
@@ -37,7 +39,7 @@ class Router {
             }
             return $segement;
         }, $segements);
-        $segements = "#^" . implode('/', $segements,) . "$#i";
+        $segements = "#^" . implode('/', $segements,) . "$#iu";
         return $segements;
     }
 }
