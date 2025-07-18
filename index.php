@@ -14,7 +14,7 @@ $router->add('/home/index', ['controller' => 'Home', 'action' => 'index']);
 $router->add('/', ['controller' => 'Home', 'action' => 'index']);
 $router->add('/products', ['controller' => 'Products', 'action' => 'index']);
 $params =  $router->match($path);
-print_r(compact('params'));
+// print_r(compact('params'));
 if (!$params) {
     exit('404 not found');
 }

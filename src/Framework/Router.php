@@ -14,7 +14,7 @@ class Router {
         $path = trim($path, '/');
         foreach ($this->routes as $route) {
             $pattern =  $this->getPatternFromRoutePath($route['path']);
-            print_r(compact('pattern'));
+            // print_r(compact('pattern'));
             if (preg_match($pattern, $path, $matches)) {
                 $matches =    array_filter($matches, function ($key,) {
                     return preg_match('#[a-z]+#', $key);
@@ -37,7 +37,7 @@ class Router {
             }
             return $segement;
         }, $segements);
-        $segements = "#^" . implode('/', $segements,) . "$#";
+        $segements = "#^" . implode('/', $segements,) . "$#i";
         return $segements;
     }
 }
