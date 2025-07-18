@@ -1,4 +1,6 @@
 <?php
+
+
 spl_autoload_register(function (string $className) {
     $className = str_replace('\\', '/', $className);
 
@@ -23,3 +25,4 @@ $action = $params['action'];
 $controller = 'App\Controllers\\' . ucwords($params['controller']);
 $cont = new $controller();
 $cont->$action();
+$dispatcher = new \Framework\Dispatcher($router);
