@@ -11,7 +11,8 @@ class Products {
         $products = $product->getData();
         require "views/product_index.php";
     }
-    public function show() {
+    public function show(string $id) {
+        print_r(compact('id'));
         require "views/product_show.php";
     }
 }
