@@ -2,6 +2,8 @@
 
 namespace Framework;
 
+use ReflectionMethod;
+
 class Dispatcher {
     public function __construct(private Router $router) {
     }
@@ -12,7 +14,18 @@ class Dispatcher {
         }
         $action = $params['action'];
         $controller = 'App\Controllers\\' . ucwords($params['controller']);
+        $args =  $this->getActionArguments($controller, $action, $params);
         $cont = new $controller();
-        $cont->$action();
+        $cont->$action(...$args);
+    }
+    private function getActionArguments(string $controller, string $action, array $params): array {
+        $args = [];
+        $method = new ReflectionMethod($controller, $action);
+        $paramaters =   $method->getParameters();
+        foreach ($paramaters as $paramater) {
+            $name = $paramater->getName();
+            $args[$name]  =  $params[$name];
+        }
+        return $args;
     }
 }

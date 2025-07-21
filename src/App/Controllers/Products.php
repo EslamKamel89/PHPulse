@@ -6,13 +6,14 @@ use App\Models\Product;
 
 class Products {
     public function index() {
-        // require "src/models/product.php";
         $product = new Product();
         $products = $product->getData();
         require "views/product_index.php";
     }
     public function show(string $id) {
-        print_r(compact('id'));
         require "views/product_show.php";
+    }
+    public function showPage(string $title, string $id, string $page) {
+        print_r(compact('title', 'id', 'page'));
     }
 }

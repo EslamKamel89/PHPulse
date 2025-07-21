@@ -8,6 +8,7 @@ $path = $_SERVER['REQUEST_URI'];
 $path = parse_url($path, PHP_URL_PATH);
 // require "src/router.php";
 $router = new Framework\Router();
+$router->add('/{title}/{id:\d+}/{page:\d+}', ['controller' => 'Products', 'action' => 'showPage']);
 $router->add('/home/index', ['controller' => 'Home', 'action' => 'index']);
 $router->add('/', ['controller' => 'Home', 'action' => 'index']);
 $router->add('/products', ['controller' => 'Products', 'action' => 'index']);
