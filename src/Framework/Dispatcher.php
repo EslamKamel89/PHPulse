@@ -12,8 +12,8 @@ class Dispatcher {
         if (!$params) {
             exit('404 not found');
         }
-        $action = $params['action'];
-        $controller = 'App\Controllers\\' . ucwords($params['controller']);
+        $action = $this->getActionName($params);
+        $controller = $this->getControllerName($params);
         $args =  $this->getActionArguments($controller, $action, $params);
         $cont = new $controller();
         $cont->$action(...$args);
@@ -27,5 +27,19 @@ class Dispatcher {
             $args[$name]  =  $params[$name];
         }
         return $args;
+    }
+    private function getControllerName(array $params) {
+        $controller = $params['controller'];
+        $controller = ucwords(strtolower($controller), '-');
+        $controller = str_replace('-', '', $controller);
+        $namespace = 'App\Controllers';
+        return $namespace . '\\' . $controller;
+    }
+    private function getActionName(array $params) {
+        $action = $params['action'];
+        $action = ucwords(strtolower($action), '-');
+        $action = str_replace('-', '', $action);
+        $action = lcfirst($action);
+        return  $action;
     }
 }
