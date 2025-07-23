@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <div>Show an indvidual record</div>
+    <div>Show an indvidual record: <?= $id ?></div>
 </body>
 
 </html>
