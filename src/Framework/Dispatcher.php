@@ -2,6 +2,7 @@
 
 namespace Framework;
 
+use App\Models\Product;
 use ReflectionMethod;
 
 class Dispatcher {
@@ -15,7 +16,7 @@ class Dispatcher {
         $action = $this->getActionName($params);
         $controller = $this->getControllerName($params);
         $args =  $this->getActionArguments($controller, $action, $params);
-        $cont = new $controller(new Viewer());
+        $cont = new $controller(new Viewer(), new Product());
         $cont->$action(...$args);
     }
     private function getActionArguments(string $controller, string $action, array $params): array {
