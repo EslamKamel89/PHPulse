@@ -16,17 +16,8 @@ class Dispatcher {
         }
         $action = $this->getActionName($params);
         $controller = $this->getControllerName($params);
-        $reflector  = new ReflectionClass($controller);
-        $constructor = $reflector->getConstructor();
-        $dependecies = [];
-        if ($constructor !== null) {
-            foreach ($constructor->getParameters() as $parameter) {
-                $type = (string)$parameter->getType();
-                $dependecies[] = new $type();
-            }
-        }
+        $cont = $this->getObject($controller);
         $args =  $this->getActionArguments($controller, $action, $params);
-        $cont = new $controller(...$dependecies);
         $cont->$action(...$args);
     }
     private function getActionArguments(string $controller, string $action, array $params): array {
@@ -52,5 +43,18 @@ class Dispatcher {
         $action = str_replace('-', '', $action);
         $action = lcfirst($action);
         return  $action;
+    }
+    private function getObject(string $className): object {
+        $reflector  = new ReflectionClass($className);
+        $constructor = $reflector->getConstructor();
+        $dependecies = [];
+        if ($constructor === null) {
+            return new $className();
+        }
+        foreach ($constructor->getParameters() as $parameter) {
+            $type = (string)$parameter->getType();
+            $dependecies[] = $this->getObject($type);
+        }
+        return  new $className(...$dependecies);
     }
 }
