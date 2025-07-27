@@ -1,4 +1,7 @@
 <?php
+
+use Framework\Container;
+
 spl_autoload_register(function (string $className) {
     $className = str_replace('\\', '/', $className);
 
@@ -17,5 +20,5 @@ $router->add('/product/{slug:[\w-]+}', ['controller' => 'products', 'action' => 
 $router->add("/{controller}/{action}");
 // print_r(compact('params'));
 
-$dispatcher = new \Framework\Dispatcher($router);
+$dispatcher = new \Framework\Dispatcher($router,  new Container());
 $dispatcher->handle($path);

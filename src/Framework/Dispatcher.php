@@ -7,7 +7,7 @@ use ReflectionClass;
 use ReflectionMethod;
 
 class Dispatcher {
-    public function __construct(private Router $router) {
+    public function __construct(private Router $router, private Container $container) {
     }
     public function handle(string $path) {
         $params =  $this->router->match($path);
@@ -16,7 +16,7 @@ class Dispatcher {
         }
         $action = $this->getActionName($params);
         $controller = $this->getControllerName($params);
-        $cont = $this->getObject($controller);
+        $cont = $this->container->get($controller);
         $args =  $this->getActionArguments($controller, $action, $params);
         $cont->$action(...$args);
     }
@@ -43,18 +43,5 @@ class Dispatcher {
         $action = str_replace('-', '', $action);
         $action = lcfirst($action);
         return  $action;
-    }
-    private function getObject(string $className): object {
-        $reflector  = new ReflectionClass($className);
-        $constructor = $reflector->getConstructor();
-        $dependecies = [];
-        if ($constructor === null) {
-            return new $className();
-        }
-        foreach ($constructor->getParameters() as $parameter) {
-            $type = (string)$parameter->getType();
-            $dependecies[] = $this->getObject($type);
-        }
-        return  new $className(...$dependecies);
     }
 }
