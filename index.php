@@ -1,5 +1,6 @@
 <?php
 
+use App\Database;
 use Framework\Container;
 
 spl_autoload_register(function (string $className) {
@@ -20,5 +21,7 @@ $router->add('/product/{slug:[\w-]+}', ['controller' => 'products', 'action' => 
 $router->add("/{controller}/{action}");
 // print_r(compact('params'));
 
-$dispatcher = new \Framework\Dispatcher($router,  new Container());
+$container = new Container();
+$container->set(Database::class, new Database('localhost', 'product_db', 'root', ''));
+$dispatcher = new \Framework\Dispatcher($router,  $container);
 $dispatcher->handle($path);
