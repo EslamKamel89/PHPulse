@@ -18,7 +18,16 @@ class Container {
             return new $className();
         }
         foreach ($constructor->getParameters() as $parameter) {
-            $type = (string)$parameter->getType();
+            $type = $parameter->getType();
+            if ($type === null) {
+                exit("Constructor parameter {$parameter->getName()} in the {$className} has no type decleration");
+            }
+            if (!$type instanceof \ReflectionNamedType) {
+                exit("Constructor parameter {$parameter->getName()} in the {$className} has invalid type decleration");
+            }
+            if ($type->isBuiltin()) {
+                exit("Unable to resolve the contructor pramater {$parameter->getName()} of type {$parameter->getType()} in the {$className} class");
+            }
             $dependecies[] = $this->get($type);
         }
         return  new $className(...$dependecies);
