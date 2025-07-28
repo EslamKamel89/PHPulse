@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework;
 
 class Container {
@@ -28,7 +30,7 @@ class Container {
             if ($type->isBuiltin()) {
                 exit("Unable to resolve the contructor pramater {$parameter->getName()} of type {$parameter->getType()} in the {$className} class");
             }
-            $dependecies[] = $this->get($type);
+            $dependecies[] = $this->get((string)$type);
         }
         return  new $className(...$dependecies);
     }
