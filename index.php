@@ -22,6 +22,6 @@ $router->add("/{controller}/{action}");
 // print_r(compact('params'));
 
 $container = new Container();
-$container->set(Database::class, new Database('localhost', 'product_db', 'root', ''));
+$container->set(Database::class, fn() => new Database('localhost', 'product_db', 'root', ''));
 $dispatcher = new \Framework\Dispatcher($router,  $container);
 $dispatcher->handle($path);

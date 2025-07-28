@@ -4,12 +4,12 @@ namespace Framework;
 
 class Container {
     private array $registry = [];
-    public function set(string $name, $value): void {
-        $this->registry[$name] = $value;
+    public function set(string $name, \Closure $value): void {
+        $this->registry[$name] =  $value;
     }
     public function get(string $className): object {
         if (array_key_exists($className, $this->registry)) {
-            return $this->registry[$className];
+            return $this->registry[$className]();
         }
         $reflector  = new \ReflectionClass($className);
         $constructor = $reflector->getConstructor();

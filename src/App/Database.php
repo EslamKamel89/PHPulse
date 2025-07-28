@@ -11,6 +11,7 @@ class Database {
         private string $username,
         private string $password,
     ) {
+        // echo "New database object is created";
     }
     function getConnection(): PDO {
         // $host = 'localhost';
