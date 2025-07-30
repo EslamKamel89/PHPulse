@@ -22,13 +22,13 @@ class Container {
         foreach ($constructor->getParameters() as $parameter) {
             $type = $parameter->getType();
             if ($type === null) {
-                exit("Constructor parameter {$parameter->getName()} in the {$className} has no type decleration");
+                throw new \InvalidArgumentException("Constructor parameter {$parameter->getName()} in the {$className} has no type decleration");
             }
             if (!$type instanceof \ReflectionNamedType) {
-                exit("Constructor parameter {$parameter->getName()} in the {$className} has invalid type decleration");
+                throw new \InvalidArgumentException("Constructor parameter {$parameter->getName()} in the {$className} has invalid type decleration");
             }
             if ($type->isBuiltin()) {
-                exit("Unable to resolve the contructor pramater {$parameter->getName()} of type {$parameter->getType()} in the {$className} class");
+                throw new \InvalidArgumentException("Unable to resolve the contructor pramater {$parameter->getName()} of type {$parameter->getType()} in the {$className} class");
             }
             $dependecies[] = $this->get((string)$type);
         }
