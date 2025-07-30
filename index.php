@@ -7,11 +7,13 @@ use Framework\Container;
 
 spl_autoload_register(function (string $className) {
     $className = str_replace('\\', '/', $className);
-
     require "src/$className.php";
 });
 $path = $_SERVER['REQUEST_URI'];
 $path = parse_url($path, PHP_URL_PATH);
+if ($path === false) {
+    throw new \UnexpectedValueException("Mailformed URL: {$_SERVER['REQUEST_URI']}");
+}
 // require "src/router.php";
 $router = new Framework\Router();
 $router->add('/{title}/{id:\d+}/{page:\d+}', ['controller' => 'Products', 'action' => 'showPage']);
