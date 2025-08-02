@@ -1,6 +1,25 @@
 <?php
 
 declare(strict_types=1);
+set_error_handler(function (
+    int $errno,
+    string $errstr,
+    string $errfile,
+    int $errline
+): bool {
+    throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
+});
+set_exception_handler(function (\Throwable $exception) {
+    $showErrors = true;
+    ini_set('log_errors', '1');
+    if ($showErrors) {
+        ini_set('display_errors', '1');
+    } else {
+        ini_set('display_errors', '0');
+        require "views/500.php";
+    }
+    throw $exception;
+});
 
 use App\Database;
 use Framework\Container;
