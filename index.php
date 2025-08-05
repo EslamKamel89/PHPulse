@@ -10,6 +10,11 @@ set_error_handler(function (
     throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
 });
 set_exception_handler(function (\Throwable $exception) {
+    if ($exception instanceof Framework\Exceptions\PageNotFoundException) {
+        http_response_code(404);
+    } else {
+        http_response_code(500);
+    }
     $showErrors = true;
     ini_set('log_errors', '1');
     if ($showErrors) {
