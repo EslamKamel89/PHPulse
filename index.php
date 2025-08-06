@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Framework\Exceptions\ErrorHandler;
 
+
 spl_autoload_register(function (string $className) {
     $className = str_replace('\\', '/', $className);
     require "src/$className.php";
@@ -13,8 +14,6 @@ spl_autoload_register(function (string $className) {
 set_error_handler([ErrorHandler::class, 'handleError']);
 set_exception_handler([ErrorHandler::class, 'handleException']);
 
-use App\Database;
-use Framework\Container;
 
 
 $path = $_SERVER['REQUEST_URI'];
@@ -25,8 +24,6 @@ if ($path === false) {
 
 $router = require 'config/routes.php';
 // print_r(compact('params'));
-
-$container = new Container();
-$container->set(Database::class, fn() => new Database('localhost', 'product_db', 'root', ''));
+$container = require "config/services.php";
 $dispatcher = new \Framework\Dispatcher($router,  $container);
 $dispatcher->handle($path);
