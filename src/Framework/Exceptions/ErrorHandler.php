@@ -23,7 +23,7 @@ class ErrorHandler {
             http_response_code(500);
             $template = '500.php';
         }
-        $showErrors = true;
+        $showErrors = $_ENV['SHOW_ERRORS'] === 'true';
         ini_set('log_errors', '1');
         if ($showErrors) {
             ini_set('display_errors', '1');
