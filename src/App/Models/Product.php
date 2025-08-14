@@ -15,4 +15,16 @@ class Product {
         $stmt = $pdo->query('SELECT * FROM product');
         return  $stmt->fetchAll();
     }
+    public function find(string $id) {
+        $pdo = $this->database->getConnection();
+        $sql = "
+        SELECT *
+        FROM product
+        WHERE id = :id
+        ";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }

@@ -1,4 +1,5 @@
-<div>Show an indvidual record: <?= $id ?></div>
+<h1> <?= $product['name'] ?></h1>
+<div> <?= $product['description'] ?></div>
 </body>
 
 </html>

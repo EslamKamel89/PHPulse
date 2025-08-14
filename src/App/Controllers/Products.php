@@ -16,7 +16,8 @@ class Products {
         echo $this->viewer->render('Products/index', ['products' => $products]);
     }
     public function show(string $id) {
+        $product = $this->product->find($id);
         echo $this->viewer->render('shared/header', ['title' => 'Product']);
-        echo $this->viewer->render('Products/show', ['id' => $id]);
+        echo $this->viewer->render('Products/show', ['product' => $product]);
     }
 }
