@@ -29,7 +29,7 @@ class ErrorHandler {
             ini_set('display_errors', '1');
         } else {
             ini_set('display_errors', '0');
-            require "views/$template";
+            require ROOT_PATH . "/views/$template";
         }
         throw $exception;
     }
