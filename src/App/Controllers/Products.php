@@ -28,4 +28,10 @@ class Products {
         echo $this->viewer->render('shared/header', ['title' => 'New Product']);
         echo  $this->viewer->render('Products/new');
     }
+    public function create() {
+        $data = [
+            'name' => $_POST['name'],
+            'description' => $_POST['description']
+        ];
+    }
 }
