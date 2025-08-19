@@ -4,6 +4,7 @@ $router->add('/{title}/{id:\d+}/{page:\d+}', ['controller' => 'Products', 'actio
 $router->add('/home/index', ['controller' => 'Home', 'action' => 'index']);
 $router->add('/', ['controller' => 'Home', 'action' => 'index']);
 $router->add('/products', ['controller' => 'Products', 'action' => 'index']);
+$router->add('/products/new', ['controller' => 'Products', 'action' => 'new']);
 $router->add('/{controller}/{id:\d+}/{action}');
 $router->add('/product/{slug:[\w-]+}', ['controller' => 'products', 'action' => 'show']);
 $router->add("/{controller}/{action}");

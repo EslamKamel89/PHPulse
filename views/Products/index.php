@@ -1,5 +1,5 @@
 <h1>Products</h1>
-
+<a href="/products/new">+ Product</a>
 <ul>
     <?php foreach ($products as $product):  ?>
         <h2>
