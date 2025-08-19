@@ -31,7 +31,8 @@ class Products {
     public function create() {
         $data = [
             'name' => $_POST['name'],
-            'description' => $_POST['description']
+            'description' => empty($_POST['description']) ? null : $_POST[' ']
         ];
+        var_dump($this->product->insert($data));
     }
 }

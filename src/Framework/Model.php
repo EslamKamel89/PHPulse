@@ -33,11 +33,27 @@ abstract class Model {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     public function insert(array $data): bool {
-        $sql = "INSERT INTO {$this->table} (name , description) VALUES (? , ?)";
+        $columns = implode(' , ', array_keys($data));
+        $placeholders = implode(' , ', array_fill(0, count(array_keys($data)), '?'));
+        $sql = "INSERT INTO {$this->getTable()} ($columns) VALUES ( $placeholders)";
         $pdo = $this->database->getConnection();
         $stmt = $pdo->prepare($sql);
-        $stmt->bindValue(1, $data['name'], PDO::PARAM_STR);
-        $stmt->bindValue(1, $data['description'], PDO::PARAM_STR);
+        $values = array_values($data);
+        foreach ($values as $index => $value) {
+            $stmt->bindValue(
+                $index + 1,
+                $values[$index],
+                $this->pdoType($values[$index])
+            );
+        }
         return $stmt->execute();
+    }
+    protected function pdoType($value) {
+        return match (getType($value)) {
+            'boolean' => PDO::PARAM_BOOL,
+            'integer' => PDO::PARAM_INT,
+            'NULL' => PDO::PARAM_NULL,
+            default => PDO::PARAM_STR,
+        };
     }
 }
