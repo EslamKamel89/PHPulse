@@ -24,4 +24,8 @@ class Products {
         echo $this->viewer->render('shared/header', ['title' => 'Product']);
         echo $this->viewer->render('Products/show', ['product' => $product]);
     }
+    public function new() {
+        $this->viewer->render('shared/header', ['title' => 'New Product']);
+        $this->viewer->render('Products/new');
+    }
 }
