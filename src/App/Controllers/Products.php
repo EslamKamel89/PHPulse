@@ -34,7 +34,8 @@ class Products {
             'description' => empty($_POST['description']) ? null : $_POST['description']
         ];
         if ($this->product->insert($data)) {
-            echo  "record saved.";
+            header("Location: /products/{$this->product->getInsertId()}/show");
+            exit;
         } else {
             echo $this->viewer->render('shared/header', ['title' => 'New Product']);
             echo  $this->viewer->render('Products/new', ['errors' => $this->product->getErrors()]);

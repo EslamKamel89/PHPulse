@@ -7,6 +7,7 @@ namespace App;
 use PDO;
 
 class Database {
+    private ?PDO $pdo = null;
     public function __construct(
         private string $host,
         private string $dbname,
@@ -16,14 +17,12 @@ class Database {
         // echo "New database object is created";
     }
     function getConnection(): PDO {
-        // $host = 'localhost';
-        // $dbname = 'product_db';
-        // $username = 'root';
-        // $password = '';
+        if ($this->pdo !== null) return $this->pdo;
         $dsn  = "mysql:host={$this->host};dbname={$this->dbname};charset=utf8mb4;port=3306";
         $pdo = new PDO($dsn, $this->username, $this->password);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+        $this->pdo = $pdo;
         return $pdo;
     }
 }

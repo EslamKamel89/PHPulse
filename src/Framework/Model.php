@@ -66,4 +66,8 @@ abstract class Model {
     public function getErrors() {
         return $this->errors;
     }
+    public function getInsertId(): string {
+        $pdo = $this->database->getConnection();
+        return $pdo->lastInsertId();
+    }
 }
