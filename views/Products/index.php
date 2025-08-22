@@ -7,7 +7,7 @@
                 <?= htmlspecialchars($product['name']) ?>
             </a>
         </h2>
-        <p><?= htmlspecialchars($product['description']) ?></p>
+        <p><?= htmlspecialchars($product['description'] ?? '') ?></p>
     <?php endforeach; ?>
 </ul>
 </body>

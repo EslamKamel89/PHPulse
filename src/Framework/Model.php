@@ -42,8 +42,8 @@ abstract class Model {
         foreach ($values as $index => $value) {
             $stmt->bindValue(
                 $index + 1,
-                $values[$index],
-                $this->pdoType($values[$index])
+                $value,
+                $this->pdoType($value)
             );
         }
         return $stmt->execute();
