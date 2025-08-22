@@ -33,6 +33,12 @@ class Products {
             'name' => $_POST['name'],
             'description' => empty($_POST['description']) ? null : $_POST['description']
         ];
-        var_dump($this->product->insert($data));
+        if ($this->product->insert($data)) {
+            echo  "record saved.";
+        } else {
+            echo $this->viewer->render('shared/header', ['title' => 'New Product']);
+            echo  $this->viewer->render('Products/new', ['errors' => $this->product->getErrors()]);
+        }
+        // var_dump($this->product->getErrors());
     }
 }

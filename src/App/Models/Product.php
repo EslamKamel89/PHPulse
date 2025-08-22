@@ -7,5 +7,9 @@ namespace App\Models;
 use FrameWork\Model;
 
 class Product  extends Model {
-    // protected  $table = 'product';
+    protected function validate(array $data): void {
+        if (empty($data['name'])) {
+            $this->addError('name', 'The name field is required');
+        }
+    }
 }

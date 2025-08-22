@@ -33,6 +33,8 @@ abstract class Model {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     public function insert(array $data): bool {
+        $this->validate($data);
+        if (!empty($this->errors)) return false;
         $columns = implode(' , ', array_keys($data));
         $placeholders = implode(' , ', array_fill(0, count(array_keys($data)), '?'));
         $sql = "INSERT INTO {$this->getTable()} ($columns) VALUES ( $placeholders)";
@@ -55,5 +57,13 @@ abstract class Model {
             'NULL' => PDO::PARAM_NULL,
             default => PDO::PARAM_STR,
         };
+    }
+    abstract protected  function validate(array $array): void;
+    protected  function addError(string $field, string $message): void {
+        $this->errors[$field] = $message;
+    }
+    protected array $errors = [];
+    public function getErrors() {
+        return $this->errors;
     }
 }
