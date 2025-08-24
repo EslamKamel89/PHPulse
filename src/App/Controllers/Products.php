@@ -24,6 +24,14 @@ class Products {
         echo $this->viewer->render('shared/header', ['title' => 'Product']);
         echo $this->viewer->render('Products/show', ['product' => $product]);
     }
+    public function edit(string $id) {
+        $product = $this->product->find($id);
+        if (!$product) {
+            throw new PageNotFoundException();
+        }
+        echo $this->viewer->render('shared/header', ['title' => 'Edit Product']);
+        echo $this->viewer->render('Products/edit', ['product' => $product]);
+    }
     public function new() {
         echo $this->viewer->render('shared/header', ['title' => 'New Product']);
         echo  $this->viewer->render('Products/new');
@@ -41,5 +49,26 @@ class Products {
             echo  $this->viewer->render('Products/new', ['errors' => $this->product->getErrors()]);
         }
         // var_dump($this->product->getErrors());
+    }
+    public function update(string $id) {
+        $product = $this->product->find($id);
+        if (!$product) {
+            throw new PageNotFoundException();
+        }
+        $data = [
+            'name' => $_POST['name'],
+            'description' => empty($_POST['description']) ? null : $_POST['description']
+        ];
+        if ($this->product->update($id, $data)) {
+            header("Location: /products/{$id}/show");
+            exit;
+        } else {
+            echo $this->viewer->render('shared/header', ['title' => 'Edit Product']);
+            $data['id'] = $product['id'];
+            echo  $this->viewer->render('Products/edit', [
+                'errors' => $this->product->getErrors(),
+                'product' => $data
+            ]);
+        }
     }
 }

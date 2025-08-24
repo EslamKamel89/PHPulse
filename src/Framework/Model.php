@@ -50,6 +50,35 @@ abstract class Model {
         }
         return $stmt->execute();
     }
+    public function update(string $id, array $data) {
+        $this->validate($data);
+        if (!empty($this->errors)) return false;
+        unset($data['id']);
+        $sql = "UPDATE  {$this->getTable()} ";
+        $assignments = array_keys($data);
+        array_walk($assignments, function (&$value) {
+            $value = "$value = ?";
+        });
+        $sql .= " SET " . implode(' , ', $assignments);
+        $sql .= " WHERE id = ? ";
+        $pdo = $this->database->getConnection();
+        $stmt = $pdo->prepare($sql);
+        $values = array_values($data);
+        $index = 1;
+        foreach ($values as  $value) {
+            $stmt->bindValue(
+                $index++,
+                $value,
+                $this->pdoType($value)
+            );
+        }
+        $stmt->bindValue(
+            $index,
+            $id,
+            $this->pdoType($id)
+        );
+        return $stmt->execute();
+    }
     protected function pdoType($value) {
         return match (getType($value)) {
             'boolean' => PDO::PARAM_BOOL,
