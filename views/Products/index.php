@@ -1,4 +1,5 @@
-<h1>Products</h1>
+<h1>Products </h1>
+<p>Total: <?= $total ?></p>
 <a href="/products/new">+ Product</a>
 <ul>
     <?php foreach ($products as $product):  ?>

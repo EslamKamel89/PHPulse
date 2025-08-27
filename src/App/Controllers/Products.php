@@ -14,23 +14,27 @@ class Products {
     public function index() {
         $products = $this->product->findAll();
         echo $this->viewer->render('shared/header', ['title' => 'Products']);
-        echo $this->viewer->render('Products/index', ['products' => $products]);
+        echo $this->viewer->render('Products/index', [
+            'products' => $products,
+            'total' => $this->product->getTotal(),
+        ]);
     }
     public function show(string $id) {
-        $product = $this->product->find($id);
-        if (!$product) {
-            throw new PageNotFoundException();
-        }
+        $product = $this->getProduct($id);
         echo $this->viewer->render('shared/header', ['title' => 'Product']);
         echo $this->viewer->render('Products/show', ['product' => $product]);
     }
     public function edit(string $id) {
+        $product = $this->getProduct($id);
+        echo $this->viewer->render('shared/header', ['title' => 'Edit Product']);
+        echo $this->viewer->render('Products/edit', ['product' => $product]);
+    }
+    protected function getProduct(string $id): array {
         $product = $this->product->find($id);
         if (!$product) {
             throw new PageNotFoundException();
         }
-        echo $this->viewer->render('shared/header', ['title' => 'Edit Product']);
-        echo $this->viewer->render('Products/edit', ['product' => $product]);
+        return $product;
     }
     public function new() {
         echo $this->viewer->render('shared/header', ['title' => 'New Product']);
@@ -70,5 +74,15 @@ class Products {
                 'product' => $data
             ]);
         }
+    }
+    public function delete(string $id) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $this->product->delete($id);
+            header("Location: /products/index");
+            exit;
+        }
+        $product =    $this->getProduct($id);
+        echo $this->viewer->render('shared/header', ['title' => 'Delete product']);
+        echo $this->viewer->render('Products/delete', ['product' => $product]);
     }
 }

@@ -9,7 +9,7 @@ use PDO;
 
 abstract class Model {
     protected  $table;
-    public function __construct(private Database $database) {
+    public function __construct(protected Database $database) {
     }
     private function getTable() {
         $parts = explode('\\', $this::class);
@@ -98,5 +98,13 @@ abstract class Model {
     public function getInsertId(): string {
         $pdo = $this->database->getConnection();
         return $pdo->lastInsertId();
+    }
+    public function delete(string $id): bool {
+        $sql = " DELETE FROM {$this->getTable()} 
+        WHERE id = :id ";
+        $pdo = $this->database->getConnection();
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
     }
 }
