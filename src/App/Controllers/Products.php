@@ -76,13 +76,13 @@ class Products {
         }
     }
     public function delete(string $id) {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $this->product->delete($id);
-            header("Location: /products/index");
-            exit;
-        }
-        $product =    $this->getProduct($id);
+        $product = $this->getProduct($id);
         echo $this->viewer->render('shared/header', ['title' => 'Delete product']);
         echo $this->viewer->render('Products/delete', ['product' => $product]);
+    }
+    public function destroy(string $id) {
+        $this->product->delete($id);
+        header("Location: /products/index");
+        exit;
     }
 }

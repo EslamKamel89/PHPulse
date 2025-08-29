@@ -12,10 +12,10 @@ use ReflectionMethod;
 class Dispatcher {
     public function __construct(private Router $router, private Container $container) {
     }
-    public function handle(string $path) {
-        $params =  $this->router->match($path);
+    public function handle(string $path, string $method) {
+        $params =  $this->router->match($path, $method);
         if (!$params) {
-            throw new PageNotFoundException("No match found for $path");
+            throw new PageNotFoundException("No match found for $path with  $method method.");
         }
         $action = $this->getActionName($params);
         $controller = $this->getControllerName($params);

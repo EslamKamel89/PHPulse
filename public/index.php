@@ -21,10 +21,10 @@ $env->load(ROOT_PATH . '/.env');
 $path = $_SERVER['REQUEST_URI'];
 $path = parse_url($path, PHP_URL_PATH);
 if ($path === false) {
-    throw new \UnexpectedValueException("Mailformed URL: {$_SERVER['REQUEST_URI']}");
+    throw new \UnexpectedValueException("Malformed URL: {$_SERVER['REQUEST_URI']}");
 }
 
 $router = require ROOT_PATH . '/config/routes.php';
 $container = require ROOT_PATH . "/config/services.php";
 $dispatcher = new \Framework\Dispatcher($router,  $container);
-$dispatcher->handle($path);
+$dispatcher->handle($path, $_SERVER["REQUEST_METHOD"]);

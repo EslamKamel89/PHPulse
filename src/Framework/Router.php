@@ -11,7 +11,7 @@ class Router {
             'params' => $params,
         ];
     }
-    public function match(string $path): array | bool {
+    public function match(string $path, string $method): array | bool {
         $path = urldecode($path);
         // print_r(compact('path'));
         $path = trim($path, '/');
@@ -23,6 +23,12 @@ class Router {
                     return preg_match('#[a-z]+#', $key);
                 }, ARRAY_FILTER_USE_KEY);
                 $params = array_merge($matches, $route['params']);
+                // this is the new code that handle the method matching logic
+                if (array_key_exists('method', $params)) {
+                    if (strtolower($method) !== strtolower($params['method'])) {
+                        continue;
+                    }
+                }
                 return $params;
             }
         }
