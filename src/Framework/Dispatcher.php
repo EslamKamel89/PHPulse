@@ -8,14 +8,16 @@ use App\Models\Product;
 use Framework\Exceptions\PageNotFoundException;
 use ReflectionClass;
 use ReflectionMethod;
+use Framework\Request;
 
 class Dispatcher {
     public function __construct(private Router $router, private Container $container) {
     }
-    public function handle(string $path, string $method) {
-        $params =  $this->router->match($path, $method);
+    public function handle(Request $request) {
+        $path = $this->getPath($request->uri);
+        $params =  $this->router->match($path, $request->method);
         if (!$params) {
-            throw new PageNotFoundException("No match found for $path with  $method method.");
+            throw new PageNotFoundException("No match found for {$path} with  {$request->method} method.");
         }
         $action = $this->getActionName($params);
         $controller = $this->getControllerName($params);
@@ -46,5 +48,12 @@ class Dispatcher {
         $action = str_replace('-', '', $action);
         $action = lcfirst($action);
         return  $action;
+    }
+    private function getPath(string $uri): string {
+        $path = parse_url($uri, PHP_URL_PATH);
+        if ($path === false) {
+            throw new \UnexpectedValueException("Malformed URL: {$uri}");
+        }
+        return $path;
     }
 }

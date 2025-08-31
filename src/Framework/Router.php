@@ -23,7 +23,6 @@ class Router {
                     return preg_match('#[a-z]+#', $key);
                 }, ARRAY_FILTER_USE_KEY);
                 $params = array_merge($matches, $route['params']);
-                // this is the new code that handle the method matching logic
                 if (array_key_exists('method', $params)) {
                     if (strtolower($method) !== strtolower($params['method'])) {
                         continue;
