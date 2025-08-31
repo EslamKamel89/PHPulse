@@ -21,5 +21,5 @@ $env->load(ROOT_PATH . '/.env');
 $router = require ROOT_PATH . '/config/routes.php';
 $container = require ROOT_PATH . "/config/services.php";
 $dispatcher = new \Framework\Dispatcher($router,  $container);
-$request = new \Framework\Request($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
+$request =  \Framework\Request::createFromGlobals();
 $dispatcher->handle($request);
